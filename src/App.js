@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { PeerJsManager } from "./PeerJsManager";
+import GameContainer from "./GameContainer";
+import { GameState, Context } from './GameState';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const appCss = {
+    fontFamily: "'Poppins', sans-serif",
+    fontSize: "24px",
+    color: "#222",
+    zIndex: 500,
+    position: "absolute",
+    top: "0px",
+    left: "0px",
+    width: "calc(100% - 40px)",
+    height: "calc(100% - 40px)",
+    padding: "20px"
+};
+
+const setupChromeCast = () => {
+    if (window.navigator.userAgent.indexOf('CrKey') > -1) {
+        const options = new window.cast.framework.CastReceiverOptions();
+        options.disableIdleTimeout = true;
+
+        const instance = window.cast.framework.CastReceiverContext.getInstance();
+        instance.start(options);
+    }
+};
+setupChromeCast();
+
+
+const App = () => {
+    return (
+        <GameState>
+            <PeerJsManager />
+            <div className="App" style={appCss}>
+                <GameContainer />
+            </div>
+        </GameState>
+    );
 }
 
 export default App;
